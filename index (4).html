@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dharsana — Data Analyst</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:         #0D1117;
+  --bg-card:    #161B22;
+  --bg-hover:   #1C2333;
+  --border:     #21262D;
+  --border-lit: #30363D;
+  --green:      #3FB950;
+  --green-dim:  #238636;
+  --green-bg:   #0D2016;
+  --amber:      #D29922;
+  --amber-dim:  #9E6A03;
+  --amber-bg:   #271D00;
+  --text:       #E6EDF3;
+  --text-mid:   #8B949E;
+  --text-dim:   #484F58;
+  --mono:       'JetBrains Mono', monospace;
+  --sans:       'Inter', sans-serif;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--sans);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Layout ── */
+.wrap {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+/* ── Top nav ── */
+nav {
+  border-bottom: 1px solid var(--border);
+  padding: 1rem 0;
+  position: sticky;
+  top: 0;
+  background: rgba(13,17,23,0.92);
+  backdrop-filter: blur(8px);
+  z-index: 100;
+}
+
+.nav-inner {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.nav-logo {
+  font-family: var(--mono);
+  font-size: 0.875rem;
+  color: var(--green);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+
+.nav-logo span { color: var(--text-mid); }
+
+.nav-links {
+  display: flex;
+  gap: 1.5rem;
+  list-style: none;
+}
+
+.nav-links a {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  color: var(--text-mid);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+
+.nav-links a:hover { color: var(--green); }
+
+/* ── Hero ── */
+.hero {
+  padding: 5rem 0 4rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.hero-prompt {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  color: var(--green);
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.hero-prompt::before {
+  content: '>';
+  color: var(--green);
+  font-size: 0.875rem;
+}
+
+.hero-name {
+  font-family: var(--mono);
+  font-size: clamp(2.25rem, 5vw, 3.5rem);
+  font-weight: 500;
+  color: var(--text);
+  letter-spacing: -0.04em;
+  line-height: 1.1;
+  margin-bottom: 0.5rem;
+}
+
+.hero-name .accent { color: var(--green); }
+
+.hero-role {
+  font-family: var(--mono);
+  font-size: clamp(0.875rem, 2vw, 1.0625rem);
+  color: var(--amber);
+  font-weight: 300;
+  margin-bottom: 1.75rem;
+  letter-spacing: 0.01em;
+}
+
+.hero-desc {
+  font-size: 0.9375rem;
+  color: var(--text-mid);
+  max-width: 500px;
+  line-height: 1.75;
+  font-weight: 300;
+}
+
+.cursor {
+  display: inline-block;
+  width: 10px;
+  height: 1.1em;
+  background: var(--green);
+  margin-left: 2px;
+  vertical-align: -0.15em;
+  animation: blink 1s step-end infinite;
+  border-radius: 1px;
+}
+
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+/* ── Section ── */
+.section {
+  padding: 3.5rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.section-title {
+  font-family: var(--mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.section-title::before { content: '#'; color: var(--green); font-size: 0.875rem; }
+.section-title::after  { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+/* ── Projects ── */
+.projects { display: flex; flex-direction: column; gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+
+.proj {
+  display: block;
+  background: var(--bg-card);
+  padding: 1.375rem 1.5rem;
+  text-decoration: none;
+  color: inherit;
+  transition: background 0.15s;
+  position: relative;
+}
+
+.proj:hover { background: var(--bg-hover); }
+
+.proj::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 2px;
+  background: var(--proj-color, var(--green));
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+
+.proj:hover::before { opacity: 1; }
+
+.proj-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.proj-name {
+  font-family: var(--mono);
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text);
+  transition: color 0.15s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.proj:hover .proj-name { color: var(--proj-color, var(--green)); }
+
+.proj-arrow {
+  font-size: 0.875rem;
+  color: var(--text-dim);
+  transition: color 0.15s, transform 0.15s;
+}
+
+.proj:hover .proj-arrow {
+  color: var(--proj-color, var(--green));
+  transform: translate(2px, -2px);
+}
+
+.proj-desc {
+  font-size: 0.8125rem;
+  color: var(--text-mid);
+  line-height: 1.65;
+  font-weight: 300;
+  margin-bottom: 0.875rem;
+  max-width: 620px;
+}
+
+.proj-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+
+.tag {
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  padding: 2px 7px;
+  border-radius: 3px;
+  letter-spacing: 0.04em;
+  border: 1px solid;
+}
+
+.tag-green { color: var(--green); background: var(--green-bg); border-color: var(--green-dim); }
+.tag-amber { color: var(--amber); background: var(--amber-bg); border-color: var(--amber-dim); }
+
+/* ── Skills ── */
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.skill {
+  background: var(--bg-card);
+  padding: 1rem 1.125rem;
+  transition: background 0.15s;
+}
+
+.skill:hover { background: var(--bg-hover); }
+
+.skill-name {
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--green);
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.skill-name::before { content: '$'; color: var(--text-dim); font-size: 0.7rem; }
+
+.skill-detail {
+  font-size: 0.7rem;
+  color: var(--text-mid);
+  line-height: 1.5;
+  font-weight: 300;
+}
+
+/* ── About ── */
+.about-block {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.5rem 1.75rem;
+  border-left: 2px solid var(--green);
+}
+
+.about-text {
+  font-size: 0.9rem;
+  color: var(--text-mid);
+  line-height: 1.85;
+  font-weight: 300;
+}
+
+.about-text p + p { margin-top: 0.875rem; }
+.about-text strong { color: var(--green); font-weight: 500; }
+
+/* ── Contact — hidden by default ── */
+.contact-trigger {
+  font-family: var(--mono);
+  font-size: 0.8125rem;
+  color: var(--text-mid);
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.625rem 1.125rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: border-color 0.15s, color 0.15s;
+}
+
+.contact-trigger:hover { border-color: var(--green); color: var(--green); }
+.contact-trigger .ct-arrow { transition: transform 0.2s; }
+.contact-trigger.open .ct-arrow { transform: rotate(90deg); }
+
+.contact-panel {
+  display: none;
+  margin-top: 1rem;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.contact-panel.open { display: flex; }
+
+.contact-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--mono);
+  font-size: 0.8125rem;
+  color: var(--text-mid);
+  text-decoration: none;
+  padding: 0.625rem 1rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  transition: border-color 0.15s, color 0.15s;
+  width: fit-content;
+}
+
+.contact-item:hover { color: var(--green); border-color: var(--green); }
+.contact-item .ci-label { color: var(--text-dim); margin-right: 4px; }
+
+/* ── Footer ── */
+.footer {
+  padding: 2rem 0;
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  color: var(--text-dim);
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+/* ── Responsive ── */
+@media (max-width: 640px) {
+  .nav-links { display: none; }
+  .hero { padding: 3rem 0 2.5rem; }
+  .skills-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cursor { animation: none; opacity: 1; }
+}
+</style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav>
+  <div class="nav-inner">
+    <span class="nav-logo">dharsana<span>@portfolio</span> <span class="cursor" id="nav-cursor"></span></span>
+    <ul class="nav-links">
+      <li><a href="#projects">projects</a></li>
+      <li><a href="#skills">skills</a></li>
+      <li><a href="#about">about</a></li>
+      <li><a href="#contact">contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <!-- Hero -->
+  <section class="hero" id="home">
+    <p class="hero-prompt">whoami</p>
+    <h1 class="hero-name">Dharsana<span class="accent">.</span></h1>
+    <p class="hero-role"><span id="typed-role"></span></p>
+    <p class="hero-desc">
+      End-to-end analytics — from raw SQL on Hive and PySpark pipelines
+      to statistical experiments and Power BI dashboards.
+    </p>
+  </section>
+
+  <!-- Projects -->
+  <section class="section" id="projects">
+    <h2 class="section-title">projects</h2>
+    <div class="projects">
+
+      <!-- ✏️ Copy a .proj block to add a new project -->
+
+      <a class="proj" style="--proj-color: var(--green);"
+         href="https://github.com/dharsana2025/NYC-taxi-mobility-analysis"
+         target="_blank" rel="noopener">
+        <div class="proj-head">
+          <span class="proj-name">NYC Taxi Mobility Analysis — Q1 2026</span>
+          <span class="proj-arrow">↗</span>
+        </div>
+        <p class="proj-desc">PySpark pipeline on 63M TLC trip records modelling $2.05B gross bookings across Uber & Lyft — SLA breach analysis with a 4-page Power BI dashboard.</p>
+        <div class="proj-tags">
+          <span class="tag tag-green">PySpark</span>
+          <span class="tag tag-green">Databricks</span>
+          <span class="tag tag-green">Power BI</span>
+          <span class="tag tag-green">Python</span>
+          <span class="tag tag-amber">Big Data</span>
+        </div>
+      </a>
+
+      <a class="proj" style="--proj-color: var(--amber);"
+         href="https://github.com/dharsana2025/Customer-Segmentation"
+         target="_blank" rel="noopener">
+        <div class="proj-head">
+          <span class="proj-name">Customer Segmentation — RFM & K-Means</span>
+          <span class="proj-arrow">↗</span>
+        </div>
+        <p class="proj-desc">RFM feature engineering + K-Means clustering to identify Premium Loyal, Engaged, and At-Risk customer groups — validated with Elbow Method and Silhouette Score.</p>
+        <div class="proj-tags">
+          <span class="tag tag-amber">Python</span>
+          <span class="tag tag-amber">Scikit-learn</span>
+          <span class="tag tag-amber">K-Means</span>
+          <span class="tag tag-amber">RFM Analysis</span>
+        </div>
+      </a>
+
+      <a class="proj" style="--proj-color: var(--green);"
+         href="https://github.com/dharsana2025/ab-testing-regression-analysis"
+         target="_blank" rel="noopener">
+        <div class="proj-head">
+          <span class="proj-name">A/B Testing & Regression — Landing Page</span>
+          <span class="proj-arrow">↗</span>
+        </div>
+        <p class="proj-desc">Conversion lifted 11.87% → 17.95% (51% uplift, p &lt; 0.001) — logistic regression confirmed treatment users 1.62× more likely to convert.</p>
+        <div class="proj-tags">
+          <span class="tag tag-green">Python</span>
+          <span class="tag tag-green">SciPy</span>
+          <span class="tag tag-green">Statsmodels</span>
+          <span class="tag tag-green">A/B Testing</span>
+        </div>
+      </a>
+
+      <a class="proj" style="--proj-color: var(--amber);"
+         href="https://github.com/dharsana2025/hive4a"
+         target="_blank" rel="noopener">
+        <div class="proj-head">
+          <span class="proj-name">Retail Sales Analysis — Apache Hive SQL</span>
+          <span class="proj-arrow">↗</span>
+        </div>
+        <p class="proj-desc">9 business queries on the Superstore dataset using HiveQL in Docker — revenue trends, cohort analysis, regional performance, and delivery analysis.</p>
+        <div class="proj-tags">
+          <span class="tag tag-amber">Apache Hive</span>
+          <span class="tag tag-amber">HiveQL</span>
+          <span class="tag tag-amber">Docker</span>
+          <span class="tag tag-amber">SQL</span>
+        </div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- Skills -->
+  <section class="section" id="skills">
+    <h2 class="section-title">skills</h2>
+    <div class="skills-grid">
+      <!-- ✏️ Copy a .skill block to add a new skill -->
+      <div class="skill">
+        <p class="skill-name">Python</p>
+        <p class="skill-detail">Pandas · NumPy · Scikit-learn · Matplotlib · Seaborn</p>
+      </div>
+      <div class="skill">
+        <p class="skill-name">SQL</p>
+        <p class="skill-detail">Querying · pipeline design · aggregation · joins</p>
+      </div>
+      <div class="skill">
+        <p class="skill-name">Apache Hive</p>
+        <p class="skill-detail">HiveQL · Docker · HDFS · data warehousing</p>
+      </div>
+      <div class="skill">
+        <p class="skill-name">PySpark</p>
+        <p class="skill-detail">Databricks · large-scale pipelines</p>
+      </div>
+      <div class="skill">
+        <p class="skill-name">Power BI</p>
+        <p class="skill-detail">Dashboards · KPIs · slicers · DAX</p>
+      </div>
+      <div class="skill">
+        <p class="skill-name">Statistics</p>
+        <p class="skill-detail">Hypothesis testing · regression · A/B testing</p>
+      </div>
+      <div class="skill">
+        <p class="skill-name">Machine Learning</p>
+        <p class="skill-detail">K-Means · logistic regression · feature engineering</p>
+      </div>
+      <div class="skill">
+        <p class="skill-name">Visualisation</p>
+        <p class="skill-detail">Matplotlib · Seaborn · Power BI</p>
+      </div>
+      <div class="skill">
+        <p class="skill-name">Tools</p>
+        <p class="skill-detail">Jupyter · Git · GitHub · Ubuntu · Docker</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- About -->
+  <section class="section" id="about">
+    <h2 class="section-title">about</h2>
+    <div class="about-block">
+      <div class="about-text">
+        <!-- ✏️ UPDATE: edit to reflect your background -->
+        <p>Data analyst who works across the full stack — <strong>Hive SQL</strong> for warehousing, <strong>PySpark</strong> for scale, <strong>Python</strong> for ML and statistics, <strong>Power BI</strong> for decision-ready dashboards.</p>
+        <p>Drawn to high-complexity data problems with concrete business outcomes. Currently <strong>open to analyst roles</strong> and freelance analytics projects.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact — hidden until clicked -->
+  <section class="section" id="contact">
+    <h2 class="section-title">contact</h2>
+    <button class="contact-trigger" id="contact-btn" aria-expanded="false">
+      <span>get in touch</span>
+      <span class="ct-arrow">▶</span>
+    </button>
+    <div class="contact-panel" id="contact-panel" role="region">
+      <!-- ✏️ UPDATE: replace # and your@email.com with real values -->
+      <a class="contact-item" href="https://github.com/dharsana2025" target="_blank" rel="noopener">
+        <span class="ci-label">gh</span> github.com/dharsana2025
+      </a>
+      <a class="contact-item" href="#" target="_blank" rel="noopener">
+        <span class="ci-label">in</span> LinkedIn <!-- ✏️ replace # with your LinkedIn URL -->
+      </a>
+      <a class="contact-item" href="mailto:your@email.com">
+        <span class="ci-label">@</span> your@email.com <!-- ✏️ replace with real email -->
+      </a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <span>dharsana2025 · data analyst</span>
+    <span>html · github pages</span>
+  </footer>
+
+</div>
+
+<script>
+// Typing animation — role line
+const roles = ['Data Analyst.', 'Python · SQL · Power BI · PySpark.'];
+const roleEl = document.getElementById('typed-role');
+let ri = 0, ci = 0, deleting = false;
+
+function tick() {
+  const word = roles[ri];
+  roleEl.textContent = deleting ? word.slice(0, --ci) : word.slice(0, ++ci);
+  if (!deleting && ci === word.length) {
+    if (ri === roles.length - 1) return;
+    setTimeout(() => { deleting = true; tick(); }, 1800);
+    return;
+  }
+  if (deleting && ci === 0) { deleting = false; ri++; }
+  setTimeout(tick, deleting ? 35 : Math.random() * 45 + 55);
+}
+
+if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  roleEl.textContent = roles[roles.length - 1];
+} else {
+  setTimeout(tick, 800);
+}
+
+// Hide nav cursor after typing settles
+setTimeout(() => {
+  const nc = document.getElementById('nav-cursor');
+  if (nc) nc.style.display = 'none';
+}, 200);
+
+// Contact toggle
+const btn   = document.getElementById('contact-btn');
+const panel = document.getElementById('contact-panel');
+
+btn.addEventListener('click', () => {
+  const open = panel.classList.toggle('open');
+  btn.classList.toggle('open', open);
+  btn.setAttribute('aria-expanded', open);
+});
+
+// Active nav link on scroll
+const sections = document.querySelectorAll('section[id]');
+const navAs    = document.querySelectorAll('.nav-links a');
+
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      navAs.forEach(a => {
+        a.style.color = a.getAttribute('href') === '#' + e.target.id
+          ? 'var(--green)' : '';
+      });
+    }
+  });
+}, { threshold: 0.4 });
+
+sections.forEach(s => io.observe(s));
+</script>
+</body>
+</html>
